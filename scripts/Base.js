@@ -8,7 +8,7 @@ export default class Base extends React.Component {
     }
 
     getDom() {
-        return React.findDOMNode(this.refs.dom);
+        return React.findDOMNode(this.refs.DOM);
     }
 
     componentWillUnmount() {

@@ -4,11 +4,18 @@ import Base from './Base';
 import Validity form './validator/Validity';
 
 
-export default class Input extends Base {
+class Input extends Base {
 
-    constructor() {
-        super();
-        this._bind('_handleClick', '_handleFoo');
+    constructor(props) {
+        super(props);
+        this.state = {
+            isValid: true,
+            disabled: false,
+            readOnly: false,
+            hidden: false,
+            canValid: false
+        };
+        //this._bind('_handleClick', '_handleFoo');
 
     }
    
@@ -36,25 +43,69 @@ export default class Input extends Base {
         return value;
     }
 
-
     stringifyValue() {
         return rawValue != null ? (rawValue + '') : '';
     }
 
+    validateResult() {
+        let component = this;
+
+        if (!component.props.validations) {
+          return;
+        }
+        
+        let validResult = {
+            isValid: true,
+            rule: null,
+            args: null,
+            name: this.props.name,
+            value: null
+        };
+        
+        component.props.validations.split(',').forEach((validation) => {
+
+            let args = validation.split(':');
+            let rule = args.shift();
+            let value = component.getValue();
+
+            args = args.map((arg) => { return JSON.parse(arg); });
+            args = [value].concat(args);
+
+            validResult.value = value;
+            validResult.args = args.slice(1);
+            validResult.rule = rule;
+
+            if (!validator[rule].apply(validator, args)) {
+                validResult.isValid = false;
+                return validResult;
+            }
+        });
+
+        return validResult;
+    }
+
     validate() {
-        var validity = this.getValidationResult();
-        this.showValidity(validity);
-        return validity.isValid();
-    }
+        let vaildResult = this.validateResult();
+        let isValid = vaildResult.isValid;
+        this.setState({
+          isValid: isValid
+        });
 
-    checkValidity() {
-        var validity = this.getValidationResult();
-        return validity.isValid();
-    }
+        this.props[isValid ? 'onValid' : 'onInvalid'](vaildResult);
 
-    getValidationResult() {
-        var validity = new Validity(this.props.rules);
-        return validity.check(this.getValue());
+        return isValid;
     }
 
 }
+
+Input.defaultProps = {
+    onValid() {},
+    onInvalid() {}
+};
+
+Input.propTypes = {
+    onValid: React.PropTypes.Func,
+    onInvalid: React.PropTypes.Func
+};
+
+export Input;
