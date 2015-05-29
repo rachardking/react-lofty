@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import validator form 'validator';
 import Base from './Base';
-import Validity form './validator/Validity';
 
 
 class Input extends Base {
@@ -9,14 +9,13 @@ class Input extends Base {
     constructor(props) {
         super(props);
         this.state = {
+            rawValue: this.props.value,
             isValid: true,
             disabled: false,
             readOnly: false,
             hidden: false,
             canValid: false
         };
-        //this._bind('_handleClick', '_handleFoo');
-
     }
    
     setValue() {
@@ -26,7 +25,7 @@ class Input extends Base {
 
     setRawValue(rawValue) {
         this.setState({
-            value: rawValue
+            rawValue: rawValue
         })
     }
 
@@ -58,7 +57,7 @@ class Input extends Base {
             isValid: true,
             rule: null,
             args: null,
-            name: this.props.name,
+            name: this.props.name || '',
             value: null
         };
         

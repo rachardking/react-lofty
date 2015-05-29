@@ -43,7 +43,7 @@ class Form extends React.Component {
         React.Children.forEach(this.prpos.children, (input) => {
             let name = input.props.name;
             if (name) {
-                res[name] = input.getValue;
+                res[name] = input.getValue();
             }
         });
     }

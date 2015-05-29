@@ -2,40 +2,24 @@ import React from 'react';
 import classNames from 'classnames';
 import Input form './Input';
 
-export default class TextInput extends Input {
+class TextInput extends Input {
 
-    getDom() {
-        return React.findDOMNode(this.refs.input);
-    }
-
-    setValue() {
-        
-    }
-
-    getValue() {
-
-    }
-
-    parseValue(value) {
-        return value
-    }
-
-
-
-    validate() {
-        
-    }
-
-    renderInput() {
-
-        return <input {...this.props} className={classNames(this.props.className, 'form-control')} ref="input" key="input" />;
+    getRawValue() {
+        return this.getDom().value || this.state.rawValue || this.state.value || '';
     }
 
     render() {
+        let input;
+        switch (this.props.type) { 
+            case 'textarea':
+                input = (<textarea {...this.props} className={classNames(this.props.className} ref="DOM" key="input" />);
+            default:
+                input = (<input {...this.props} className={classNames(this.props.className)} ref="DOM" key="input" />);
+        }
         return (
-            this.renderWrap(
-                this.renderInput()
-            )
+            input
         );
     }
 }
+
+export TextInput;

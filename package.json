@@ -23,7 +23,8 @@
     "babel-loader": "^5.0.0",
     "react-hot-loader": "^1.2.2",
     "webpack": "^1.7.2",
-    "webpack-dev-server": "^1.7.0"
+    "webpack-dev-server": "^1.7.0",
+    "validator": "^3.40.0"
   },
   "dependencies": {
     "react": "^0.13.0",
