@@ -8,18 +8,18 @@ class TextInput extends Input {
         return this.getDom().value || this.state.rawValue || this.state.value || '';
     }
 
-    render() {
-        let input;
+    renderMain() {
         switch (this.props.type) { 
             case 'textarea':
-                input = (<textarea {...this.props} className={classNames(this.props.className} ref="DOM" key="input" />);
+                return (<textarea {...this.props} className={classNames(this.props.className} ref="DOM" key="input" />);
             default:
-                input = (<input {...this.props} className={classNames(this.props.className)} ref="DOM" key="input" />);
+                return (<input {...this.props} className={classNames(this.props.className)} ref="DOM" key="input" />);
         }
-        return (
-            input
-        );
+    }
+
+    render() {
+        return this.renderMain()
     }
 }
 
-export TextInput;
+export default TextInput;

@@ -46,6 +46,8 @@ class Form extends React.Component {
                 res[name] = input.getValue();
             }
         });
+
+        return res;
     }
     
 }

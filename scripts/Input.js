@@ -11,9 +11,9 @@ class Input extends Base {
         this.state = {
             rawValue: this.props.value,
             isValid: true,
-            disabled: false,
-            readOnly: false,
-            hidden: false,
+            // disabled: false,
+            // readOnly: false,
+            // hidden: false,
             canValid: false
         };
     }
@@ -43,7 +43,7 @@ class Input extends Base {
     }
 
     stringifyValue() {
-        return rawValue != null ? (rawValue + '') : '';
+        return this.state.rawValue != null ? (this.state.awValue + '') : '';
     }
 
     validateResult() {
@@ -90,6 +90,8 @@ class Input extends Base {
           isValid: isValid
         });
 
+        this.showValidateResult(vaildResult);
+
         this.props[isValid ? 'onValid' : 'onInvalid'](vaildResult);
 
         return isValid;
@@ -107,4 +109,4 @@ Input.propTypes = {
     onInvalid: React.PropTypes.Func
 };
 
-export Input;
+export default Input;
