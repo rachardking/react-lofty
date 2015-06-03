@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import validator form 'validator';
+import validator from 'validator';
+import validatorMessage './validatorMessage';
 import Base from './Base';
 
 
@@ -58,9 +59,17 @@ class Input extends Base {
             rule: null,
             args: null,
             name: this.props.name || '',
-            value: null
+            value: null,
+            message: null,
         };
         
+        //validations="isNumeric,isLength:4:12"
+        //validationError="This is not a valid email"
+        //isLength(str, min [, max])
+        // <div className={className}>
+        //   <input type="text" onChange={this.changeValue} value={this.getValue()}/>
+        //   <span>{errorMessage}</span>
+        // </div>
         component.props.validations.split(',').forEach((validation) => {
 
             let args = validation.split(':');
@@ -73,6 +82,7 @@ class Input extends Base {
             validResult.value = value;
             validResult.args = args.slice(1);
             validResult.rule = rule;
+            validResult.message = component.props.validatorMessage || validatorMessage[rule];
 
             if (!validator[rule].apply(validator, args)) {
                 validResult.isValid = false;
@@ -86,13 +96,14 @@ class Input extends Base {
     validate() {
         let vaildResult = this.validateResult();
         let isValid = vaildResult.isValid;
+
+        this.props.onValidate(vaildResult);
+
         this.setState({
           isValid: isValid
         });
 
-        this.showValidateResult(vaildResult);
-
-        this.props[isValid ? 'onValid' : 'onInvalid'](vaildResult);
+        //this.props[isValid ? 'onValid' : 'onInvalid'](vaildResult);
 
         return isValid;
     }
