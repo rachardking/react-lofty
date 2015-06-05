@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import validator from 'validator';
-import validatorMessage './validatorMessage';
+import validationMessage './validationMessage';
 import Base from './Base';
 
 
@@ -12,6 +12,7 @@ class Input extends Base {
         this.state = {
             rawValue: this.props.value,
             isValid: true,
+            validationMessage: this.props.validationMessage,
             // disabled: false,
             // readOnly: false,
             // hidden: false,
@@ -30,6 +31,24 @@ class Input extends Base {
         })
     }
 
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return nextState.value !== this.state.value;
+    // }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            rawValue: this.props.value,
+            value: this.parseValue(this.props.value)
+        });
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextState.value !== this.state.value) {
+            this.onValueChange(nextState);
+        }
+    }
+
+
     getValue() {
         return this.stringifyValue(this.getRawValue());
     }
@@ -47,7 +66,7 @@ class Input extends Base {
         return this.state.rawValue != null ? (this.state.awValue + '') : '';
     }
 
-    validateResult() {
+    validationResult() {
         let component = this;
 
         if (!component.props.validations) {
@@ -82,7 +101,7 @@ class Input extends Base {
             validResult.value = value;
             validResult.args = args.slice(1);
             validResult.rule = rule;
-            validResult.message = component.props.validatorMessage || validatorMessage[rule];
+            validResult.message = component.props.validationMessage || validationMessage[rule];
 
             if (!validator[rule].apply(validator, args)) {
                 validResult.isValid = false;
@@ -94,30 +113,49 @@ class Input extends Base {
     }
 
     validate() {
-        let vaildResult = this.validateResult();
-        let isValid = vaildResult.isValid;
+        let validationResult = this.validationResult();
 
-        this.props.onValidate(vaildResult);
+        this.props.onValidate(validationResult);
 
         this.setState({
-          isValid: isValid
+            isValid: validationResult.isValid,
+            validationMessage: validationResult.validationMessage
+
         });
-
-        //this.props[isValid ? 'onValid' : 'onInvalid'](vaildResult);
-
+       
         return isValid;
     }
+
+    // renderInput() {
+    //     return 'this is a input';
+    // }
+
+    // renderMessage() {
+    //     let errorMessage = this.getErrorMessage();
+    //     return <span className={this.state.errorMessage}>{this.state.validationMessage}</span>
+    // }
+
+    // renderWrapper(children) {
+    //     return this.props.wrapperClassName ? (
+    //         <div className={this.props.wrapperClassName} key="wrapper">
+    //             {children}
+    //         </div>
+    //     ) : children;
+    // }
+
+    // render() {
+    //     let input = this.renderInput();
+    //     return this.renderWrapper(input);
+    // }
 
 }
 
 Input.defaultProps = {
-    onValid() {},
-    onInvalid() {}
+    onValidate() {},
 };
 
 Input.propTypes = {
     onValid: React.PropTypes.Func,
-    onInvalid: React.PropTypes.Func
 };
 
 export default Input;

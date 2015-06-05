@@ -5,7 +5,7 @@ import Input form './Input';
 class TextInput extends Input {
 
     getRawValue() {
-        return this.getDom().value || this.state.rawValue || this.state.value || '';
+        return this.getDom().value;
     }
 
     renderInput() {
@@ -19,18 +19,13 @@ class TextInput extends Input {
 
     renderMessage() {
         let errorMessage = this.getErrorMessage();
-
-        return <span className={this.props.wrapperClassName}>{errorMessage}</span>
+        return <span className={this.props.wrapperClassName}>{errorMessage}</span>;
     }
 
     renderWrapper(children) {
-
-        return this.props.wrapperClassName ? (
-            <div className={this.props.wrapperClassName} key="wrapper">
+        return (<div className="wrapper" key="wrapper">
                 {children}
-
-            </div>
-        ) : children;
+        </div>);
     }
 
     render() {
