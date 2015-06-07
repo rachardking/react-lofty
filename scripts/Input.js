@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import validator from 'validator';
 import validationMessage './validationMessage';
 import Base from './Base';
+import addons from 'react/addons';
 
 
 class Input extends Base {
@@ -10,67 +11,45 @@ class Input extends Base {
     constructor(props) {
         super(props);
         this.state = {
-            rawValue: this.props.value,
-            isValid: true,
+            value: this.props.value,
             validationMessage: this.props.validationMessage,
-            // disabled: false,
-            // readOnly: false,
-            // hidden: false,
-            canValid: false
+            isValid: true
         };
     }
-   
-    setValue() {
-        var rawValue = this.parseValue(value);
-        this.setRawValue(rawValue);
-    }
 
-    setRawValue(rawValue) {
-        this.setState({
-            rawValue: rawValue
-        })
+    //shadow compare
+    shouldComponentUpdate(nextProps, nextState) {
+        return addons.addons.PureRenderMixin.shouldComponentUpdate.apply(this, arguments);
     }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     return nextState.value !== this.state.value;
-    // }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            rawValue: this.props.value,
-            value: this.parseValue(this.props.value)
+            value: this.props.value
         });
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (nextState.value !== this.state.value) {
-            this.onValueChange(nextState);
-        }
-    }
-
-
     getValue() {
-        return this.stringifyValue(this.getRawValue());
+        return this.parseOutputValue(this.getRawValue());
     }
 
     getRawValue() {
-        return this.state.rawValue;
-
+        return this.state.value;
     }
 
-    parseValue(value) {
+    parseInputValue(value) {
         return value;
     }
 
-    stringifyValue() {
-        return this.state.rawValue != null ? (this.state.awValue + '') : '';
+    parseOutputValue(value) {
+        return value;
+        //return this.state.rawValue != null ? (this.state.awValue + '') : '';
     }
 
     validationResult() {
         let component = this;
 
         if (!component.props.validations) {
-          return;
+          return true;
         }
         
         let validResult = {
@@ -113,16 +92,18 @@ class Input extends Base {
     }
 
     validate() {
+
         let validationResult = this.validationResult();
+        let isValid = validationResult.isValid;
 
         this.props.onValidate(validationResult);
 
         this.setState({
-            isValid: validationResult.isValid,
+            isValid: isValid,
             validationMessage: validationResult.validationMessage
 
         });
-       
+
         return isValid;
     }
 
@@ -152,10 +133,12 @@ class Input extends Base {
 
 Input.defaultProps = {
     onValidate() {},
+    onChange() {}
 };
 
 Input.propTypes = {
-    onValid: React.PropTypes.Func,
+    onValidate: React.PropTypes.Func,
+    onChange: React.PropTypes.Func
 };
 
 export default Input;

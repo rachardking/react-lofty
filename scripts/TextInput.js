@@ -9,6 +9,7 @@ class TextInput extends Input {
     }
 
     renderInput() {
+        this.props.value = this.parseInputValue(this.props.value);
         switch (this.props.type) { 
             case 'textarea':
                 return (<textarea {...this.props} className={classNames(this.props.className} ref="DOM" key="input" />);
