@@ -5,33 +5,32 @@ import Input form './Input';
 class TextInput extends Input {
 
     getRawValue() {
-        return this.getDom().value;
+        return this.getInputDOMNode().value;    
     }
 
     renderInput() {
-        this.props.value = this.parseInputValue(this.props.value);
+        //this.props.value = this.parseInputValue(this.props.value);
         switch (this.props.type) { 
             case 'textarea':
-                return (<textarea {...this.props} className={classNames(this.props.className} ref="DOM" key="input" />);
+                return (<textarea {...this.props} className={classNames(this.props.className} value={this.parseInputValue(this.props.value)} ref="DOM" key="input" />);
             default:
-                return (<input {...this.props} className={classNames(this.props.className)} ref="DOM" key="input" />);
+                return (<input {...this.props} type="text" className={classNames(this.props.className)} value={this.parseInputValue(this.props.value)} ref="DOM" key="input" />);
+
         }
     }
 
     renderMessage() {
-        let errorMessage = this.getErrorMessage();
-        return <span className={this.props.wrapperClassName}>{errorMessage}</span>;
-    }
-
-    renderWrapper(children) {
-        return (<div className="wrapper" key="wrapper">
-                {children}
-        </div>);
+        return <span  key="message" className={classNames(this.props.wrapperClassName)}>{this.state.validationMessage}</span>;
     }
 
     render() {
-        let children = this.renderInput();
-        return this.renderWrapper(children);
+        return (
+            <div className={classNames(this.props.wrapperClassName)} key="wrapper">
+                {this.renderInput()}
+                {this.renderMessage()}
+            </div>
+        );
+       
     }
 }
 

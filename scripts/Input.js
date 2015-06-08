@@ -42,7 +42,6 @@ class Input extends Base {
 
     parseOutputValue(value) {
         return value;
-        //return this.state.rawValue != null ? (this.state.awValue + '') : '';
     }
 
     validationResult() {
@@ -108,25 +107,26 @@ class Input extends Base {
     }
 
     // renderInput() {
-    //     return 'this is a input';
+    //     return  <div {...this.props} className={classNames(this.props.className} >this is a input</div>;
     // }
 
     // renderMessage() {
-    //     let errorMessage = this.getErrorMessage();
-    //     return <span className={this.state.errorMessage}>{this.state.validationMessage}</span>
+    //     return <span key="message">{this.state.validationMessage}</span>
     // }
 
-    // renderWrapper(children) {
+    // renderWrapper(input, message) {
     //     return this.props.wrapperClassName ? (
     //         <div className={this.props.wrapperClassName} key="wrapper">
-    //             {children}
+    //            {input}
+    //            {message}
     //         </div>
     //     ) : children;
     // }
 
     // render() {
     //     let input = this.renderInput();
-    //     return this.renderWrapper(input);
+    //     let message =  this.renderMessage()
+    //     return this.renderWrapper(input, message);
     // }
 
 }
