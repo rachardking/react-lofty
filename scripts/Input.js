@@ -90,6 +90,12 @@ class Input extends Base {
         return validResult;
     }
 
+    handleChange(e) {
+        var value = e.target ? e.target.value : e;
+        this.props.handleInputChange(this, value);
+    }
+
+
     validate() {
 
         let validationResult = this.validationResult();

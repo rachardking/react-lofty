@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Input form './Input';
 
-class TextInput extends Input {
+class select extends Input {
 
     parseOutputValue(value) {
         return value.join(',')
@@ -15,8 +15,8 @@ class TextInput extends Input {
           this.getInputDOMNode().getElementsByTagName('option'),
           (option) => {
             if (option.selected) {
-              let value = option.getAttribute('value') || option.innerHtml;
-              values.push(value);
+                let value = option.getAttribute('value') || option.innerHtml;
+                values.push(value);
             }
           });
 
@@ -47,4 +47,4 @@ class TextInput extends Input {
     }
 }
 
-export default TextInput;
+export default select;
