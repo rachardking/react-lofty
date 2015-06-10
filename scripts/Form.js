@@ -25,16 +25,16 @@ class Form extends React.Component {
     }
 
 
-    handleInputChange() {
-
+    onValidateToForm(validationResult) {
+        this.state.field[validationResult.name] = validationResult;
     }
 
-    attachField(children) {
+    attachInputs(children) {
         var self = this;
         if (children) {
           return React.Children.map(children, (child)=> {
                 return React.cloneElement(child, {
-                    handleInputChange: self.handleInputChange
+                    onValidateToForm: self.onValidateToForm.bind(this)
                 });
           });
         }
@@ -50,12 +50,20 @@ class Form extends React.Component {
             name: this.props.name || '',
             value: null,
             message: null,
+            field: {}
         };
 
         React.Children.forEach(this.prpos.children, (input) => {
+
             if (input.props.name && !input.validate()) {
-                validResult.isValid = false;
-                validResult.inputName = input.props.name;
+                let inputValidResult = input.validate();
+                validResult.field[inputValidResult.name] = inputValidResult;
+
+                if (validResult.isValid === false) {
+                    validResult.isValid = false;
+                    validResult.inputName = input.props.name;
+                }
+               
             }
         });
 
@@ -70,7 +78,7 @@ class Form extends React.Component {
           isValid: validResult.isValid
         });
 
-        this.props[isValid ? 'onValid' : 'onInvalid'](vaildResult);
+        this.props.onValidate(validationResult);
     }
 
     submit() {
@@ -92,17 +100,20 @@ class Form extends React.Component {
 
         return res;
     }
+
+    render() {
+        return <div className={this.props.className}>{this.attachInputs(this.props.children)}</div>;
+
+    }
     
 }
 
 Form.defaultProps = {
-    onValid() {},
-    onInvalid() {},
+    onValidate() {},
     onSubmit() {}
 };
 
 Form.propTypes = {
-    onValid: React.PropTypes.Func,
-    onInvalid: React.PropTypes.Func,
+    onValidate: React.PropTypes.Func,
     onSubmit: React.PropTypes.Func
 };

@@ -88,7 +88,7 @@ class Input extends Base {
         });
 
         return validResult;
-    }
+    }   
 
     handleChange(e) {
         var value = e.target ? e.target.value : e;
@@ -101,6 +101,7 @@ class Input extends Base {
         let validationResult = this.validationResult();
         let isValid = validationResult.isValid;
 
+        this.props.onValidateToForm(validationResult);
         this.props.onValidate(validationResult);
 
         this.setState({
@@ -109,37 +110,15 @@ class Input extends Base {
 
         });
 
-        return isValid;
+        return validationResult;
     }
-
-    // renderInput() {
-    //     return  <div {...this.props} className={classNames(this.props.className} >this is a input</div>;
-    // }
-
-    // renderMessage() {
-    //     return <span key="message">{this.state.validationMessage}</span>
-    // }
-
-    // renderWrapper(input, message) {
-    //     return this.props.wrapperClassName ? (
-    //         <div className={this.props.wrapperClassName} key="wrapper">
-    //            {input}
-    //            {message}
-    //         </div>
-    //     ) : children;
-    // }
-
-    // render() {
-    //     let input = this.renderInput();
-    //     let message =  this.renderMessage()
-    //     return this.renderWrapper(input, message);
-    // }
 
 }
 
 Input.defaultProps = {
     onValidate() {},
-    onChange() {}
+    onChange() {},
+    onValidateToForm() {}
 };
 
 Input.propTypes = {
